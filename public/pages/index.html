@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Agendamento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/agendamento.css">
+</head>
+
+<body class="container-center">
+
+  <div class="card">
+    <h2>Agendar horário 💅</h2>
+
+    <div class="input-group">
+      <label>Nome</label>
+      <input type="text" id="nome" placeholder="Seu nome">
+    </div>
+
+    <div class="input-group">
+      <label>Telefone</label>
+      <input type="text" id="telefone" placeholder="(00) 00000-0000">
+    </div>
+
+    <div class="input-group">
+      <label>Serviço</label>
+      <select id="servico">
+        <option value="">Selecione</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Profissional</label>
+      <select id="profissional">
+        <option value="">Selecione</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Data</label>
+      <input type="date" id="data">
+    </div>
+
+    <div class="input-group">
+      <label>Hora</label>
+      <input type="time" id="hora">
+    </div>
+
+    <button class="btn" onclick="agendar()">Confirmar Agendamento</button>
+
+    <div class="error" id="erro"></div>
+  </div>
+
+  <script>
+    async function carregarServicos() {
+      try {
+        const res = await fetch('/agendamentos/servicos');
+        //console.log('STATUS SERVICOS:', res.status);
+
+        const dados = await res.json();
+        //console.log('DADOS SERVICOS:', dados);
+
+        const select = document.getElementById('servico');
+        select.innerHTML = '<option value="">Selecione</option>';
+
+        dados.forEach(s => {
+          select.innerHTML += `<option value="${s.id}">${s.nome}</option>`;
+        });
+
+      } catch (err) {
+        //console.error('ERRO SERVICOS:', err);
+      }
+    }
+
+    async function carregarProfissionais() {
+      const res = await fetch('/agendamentos/profissionais');
+      const dados = await res.json();
+
+      const select = document.getElementById('profissional');
+      select.innerHTML = '<option value="">Selecione</option>';
+
+      dados.forEach(p => {
+        select.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+      });
+    }
+
+    async function agendar() {
+      const erro = document.getElementById('erro');
+      erro.style.display = 'none';
+
+      try {
+        const body = {
+          nome: document.getElementById('nome').value,
+          telefone: document.getElementById('telefone').value,
+          servico_id: document.getElementById('servico').value,
+          profissional_id: document.getElementById('profissional').value,
+          data: document.getElementById('data').value,
+          hora: document.getElementById('hora').value
+        };
+
+        if (!body.nome || !body.telefone || !body.servico_id || !body.profissional_id || !body.data || !body.hora) {
+          erro.innerText = 'Preencha todos os campos';
+          erro.style.display = 'block';
+          return;
+        }
+
+        const res = await fetch('/agendamentos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        if (!res.ok) throw new Error();
+
+        alert('Agendado com sucesso!');
+        window.location.href = '/pages/dashboard.html';
+
+      } catch (err) {
+        console.error(err);
+        erro.innerText = 'Erro ao agendar';
+        erro.style.display = 'block';
+      }
+    }
+
+    carregarServicos();
+    carregarProfissionais();
+  </script>
+
+</body>
+</html>

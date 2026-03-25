@@ -1,0 +1,92 @@
+/* layout principal */
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+/* sidebar */
+.sidebar {
+  width: 220px;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  color: var(--primary);
+}
+
+.menu-item {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: 0.3s;
+}
+
+.menu-item:hover {
+  background: #f5f5f5;
+}
+
+/* conteúdo */
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+/* tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+}
+
+th {
+  background: var(--primary);
+  color: white;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* status */
+.status {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: white;
+}
+
+.agendado {
+  background: #4CAF50;
+}
+
+.cancelado {
+  background: #f44336;
+}
+
+.btn-cancelar {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background: #d32f2f;
+}

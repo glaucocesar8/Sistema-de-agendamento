@@ -1,0 +1,18 @@
+/* container específico do login */
+.login-container {
+  width: 350px;
+}
+
+/* título */
+.login-title {
+  margin-bottom: 20px;
+  color: var(--text-dark);
+}
+
+/* loading */
+.loading {
+  display: none;
+  font-size: 14px;
+  margin-top: 10px;
+  color: #555;
+}

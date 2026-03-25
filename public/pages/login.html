@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Agenda Salão</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body class="container-center">
+
+  <div class="card login-container">
+    <h2 class="login-title">Login 💅</h2>
+
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Digite seu email">
+    </div>
+
+    <div class="input-group">
+      <label>Senha</label>
+      <input type="password" id="senha" placeholder="Digite sua senha">
+    </div>
+
+    <button class="btn" onclick="login()">Entrar</button>
+
+    <div class="loading" id="loading">Entrando...</div>
+    <div class="error" id="erro">Email ou senha inválidos</div>
+  </div>
+
+  <script>
+    async function login() {
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      const erro = document.getElementById('erro');
+      const loading = document.getElementById('loading');
+
+      erro.style.display = 'none';
+      loading.style.display = 'block';
+
+      if (!email || !senha) {
+        loading.style.display = 'none';
+        erro.innerText = 'Preencha todos os campos';
+        erro.style.display = 'block';
+        return;
+      }
+
+      try {
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, senha })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error();
+
+        localStorage.setItem('token', data.token);
+
+        window.location.href = '/pages/dashboard.html';
+
+      } catch {
+        erro.innerText = 'Email ou senha inválidos';
+        erro.style.display = 'block';
+      } finally {
+        loading.style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

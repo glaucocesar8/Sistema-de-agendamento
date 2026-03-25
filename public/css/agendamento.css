@@ -1,0 +1,25 @@
+/* container específico */
+.card {
+  max-width: 400px;
+  width: 100%;
+}
+
+/* título */
+.card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* botão */
+.btn {
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* erro */
+.error {
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+  display: none;
+}

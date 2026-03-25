@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Agenda Salão</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+  
+</head>
+
+<body>
+
+<div class="dashboard">
+  <!-- MENU -->
+  <div class="sidebar">
+    <h2>💅 Salão</h2>
+
+    <div class="menu-item" onclick="carregarAgenda()">Agenda</div>
+    <div class="menu-item">Serviços</div>
+    <div class="menu-item">Profissionais</div>
+    <div class="menu-item" onclick="logout()">Sair</div>
+  </div>
+  <!-- CONTEÚDO -->
+  <div class="content">
+
+    <div class="header">
+      <h1>Agenda do Dia</h1>
+    </div>
+
+    <table id="tabela">
+      <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Telefone</th>
+            <th>Serviço</th>
+            <th>Profissional</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    window.location.href = '/pages/login.html';
+  }
+
+async function carregarAgenda() {
+  try {
+    const res = await fetch('/agendamentos/todos', {
+    cache: 'no-store',
+    headers: {
+      Authorization: token
+    }
+  });
+    const dados = await res.json();
+
+    const tbody = document.getElementById('tbody');
+    tbody.innerHTML = '';
+
+    dados.forEach(item => {
+  const tr = document.createElement('tr');
+
+  tr.innerHTML = `
+    <td>${item.cliente_nome}</td>
+    <td>${item.telefone}</td>
+    <td>${item.servico}</td>
+    <td>${item.profissional}</td>
+    <td>${item.data}</td>
+    <td>${item.hora}</td>
+    <td>
+      <span class="status ${item.status}">
+        ${item.status}
+      </span>
+    </td>
+    <td>
+      ${
+        item.status !== 'cancelado'
+          ? `<button class="btn-cancelar" onclick="cancelar(${item.id})">Cancelar</button>`
+          : ''
+      }
+    </td>
+  `;
+
+  tbody.appendChild(tr);
+});
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+carregarAgenda();
+
+async function cancelar(id) {
+  const confirmar = confirm('Deseja cancelar este agendamento?');
+  if (!confirmar) return;
+
+  try {
+    const res = await fetch(`/agendamentos/cancelar/${id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: token
+      }
+    });
+
+    const data = await res.json(); // 👈 importante
+
+    if (!res.ok) throw new Error();
+
+    carregarAgenda(); // 🔄 atualiza sem depender do alert
+
+  } catch (err) {
+    console.error(err);
+    alert('Erro ao cancelar');
+  }
+}
+
+setInterval(() => {
+  carregarAgenda();
+}, 5000); // atualiza a cada 5 segundos
+
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = 'login.html';
+}
+
+</script>
+
+</body>
+</html>

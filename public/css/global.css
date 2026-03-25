@@ -1,0 +1,117 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* VARIÁVEIS (PADRÃO DO SISTEMA) */
+:root {
+  --primary: #ff758c;
+  --primary-hover: #ff5c75;
+  --bg-gradient: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  --text-dark: #333;
+  --text-light: #555;
+}
+
+/* BODY PADRÃO */
+body {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+}
+
+/* CONTAINERS */
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CARD (REUTILIZÁVEL) */
+.card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* INPUTS */
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 5px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-group input:focus {
+  border-color: var(--primary);
+}
+
+/* BOTÕES */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: var(--primary-hover);
+}
+
+/* ERRO */
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  display: none;
+}
+
+/* SELECT igual input */
+.input-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 5px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-group select:focus {
+  border-color: var(--primary);
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  color: var(--text-dark);
+}
+
+.btn:hover {
+  transform: scale(1.02);
+}
+
+input:valid, select:valid {
+  border-color: #4CAF50;
+}
